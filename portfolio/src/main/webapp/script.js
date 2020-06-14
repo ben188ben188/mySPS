@@ -25,4 +25,19 @@ function addRandomGreeting() {
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
+
+  
+}
+
+function getData1() {
+  console.log('Get Data 1');
+
+  // The fetch() function returns a Promise because the request is asynchronous.
+//The json to html
+var myJSON = '{"name":"Bin", "age":31, "city":"New York"}';
+var myObj = JSON.parse(myJSON);
+document.getElementById("demo").innerHTML = myObj.name+myObj.city;
+
+  // When the request is complete, pass the response into handleResponse().
+  
 }

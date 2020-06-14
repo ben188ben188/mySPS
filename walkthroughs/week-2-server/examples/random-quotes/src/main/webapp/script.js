@@ -15,6 +15,16 @@
 /**
  * Fetches a random quote from the server and adds it to the DOM.
  */
+function get11(){
+    console.log('123');
+    console.log('Fetching a random quote.');
+
+  // The fetch() function returns a Promise because the request is asynchronous.
+  const responsePromise = fetch('/random-quote');
+
+  // When the request is complete, pass the response into handleResponse().
+  responsePromise.then(handleResponse);
+}
 function getRandomQuote() {
   console.log('Fetching a random quote.');
 
