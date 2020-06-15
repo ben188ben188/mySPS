@@ -41,3 +41,21 @@ document.getElementById("demo").innerHTML = myObj.name+myObj.city;
   // When the request is complete, pass the response into handleResponse().
   
 }
+function getHistory() {
+  fetch('/data').then(response => response.json()).then((comment) => {
+    
+
+    console.log(comment);
+    const historyEl = document.getElementById('history');
+    comment.forEach((line) => {
+      historyEl.appendChild(createListElement(line));
+    });
+  });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text.name+" "+text.comment;
+  return liElement;
+}

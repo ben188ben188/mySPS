@@ -20,28 +20,51 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.sps.data.CommentHistory;
+import java.util.ArrayList;
+import java.util.List;
+
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+    //private List<CommentHistory> history = new ArrayList<>();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hell world! Bin Yang</h1>");
-    
-    String json = convertToJson();
+    Query query = new Query("CommentHistory").addSort("timestamp", SortDirection.DESCENDING);
 
-    response.setContentType("application/json;");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<CommentHistory> list = new ArrayList<CommentHistory>();
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String name = (String) entity.getProperty("name");
+      String comment = (String) entity.getProperty("comment");
+      long timestamp = (long) entity.getProperty("timestamp");
+
+      CommentHistory c = new CommentHistory(id, name,comment, timestamp);
+      list.add(c);
+    }
+
+  
+  
+    response.setContentType("application/json");
+    String json = new Gson().toJson(list);
     response.getWriter().println(json);
     
-    PresonIn person1=new PresonIn();
-    person1.setName("Bin");
-    person1.setAge(28);
-    person1.setAddress("flushing");
-    String person11=convertToJsonUsingGson(person1);
-    response.setContentType("application/json;");
-    response.getWriter().println(person11);
+    
+    
 
     
 }
@@ -59,5 +82,36 @@ private String convertToJsonUsingGson(PresonIn p1) {
     String json = gson.toJson(p1);
     return json;
   }
+@Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+   // CommentHistory com=new CommentHistory();
+    String text = getParameter(request, "name-input", "");
+   
+    String text1 = getParameter(request, "comment-input", "");
+    //set 
+    // com.setName(text);
+    // com.setComment(text1);
+    // history.add(com);
+    long timestamp = System.currentTimeMillis();
+   // response.sendRedirect("/index.html");
+    Entity commentEntity = new Entity("CommentHistory");
+    commentEntity.setProperty("name",text);
+    commentEntity.setProperty("comment", text1);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+    response.sendRedirect("/index.html");
+  }
+
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
+  }
 
 }
+
