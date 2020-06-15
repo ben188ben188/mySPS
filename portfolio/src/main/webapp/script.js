@@ -17,7 +17,7 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!','今天好运','good luck'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -25,4 +25,37 @@ function addRandomGreeting() {
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
+
+  
+}
+
+function getData1() {
+  console.log('Get Data 1');
+
+  // The fetch() function returns a Promise because the request is asynchronous.
+//The json to html
+var myJSON = '{"name":"Bin", "age":31, "city":"New York"}';
+var myObj = JSON.parse(myJSON);
+document.getElementById("demo").innerHTML = myObj.name+myObj.city;
+
+  // When the request is complete, pass the response into handleResponse().
+  
+}
+function getHistory() {
+  fetch('/data').then(response => response.json()).then((comment) => {
+    
+
+    console.log(comment);
+    const historyEl = document.getElementById('history');
+    comment.forEach((line) => {
+      historyEl.appendChild(createListElement(line));
+    });
+  });
+}
+
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text.name+" "+text.comment;
+  return liElement;
 }
