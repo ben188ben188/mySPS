@@ -12,6 +12,7 @@ public class CommentHistory {
     private long id;
 
   /** List of descriptions of turns, e.g. "Player 1 took 3. New total: 18" */
+  private String email;
   private String name;
   private String comment;
   private long timestamp;
@@ -21,9 +22,10 @@ public class CommentHistory {
 
   }
 
-   public CommentHistory(long id, String name, String comment, long timestamp)
+   public CommentHistory(long id, String email, String name, String comment, long timestamp)
   {
    this.id=id;
+   this.email=email;
    this.name=name;
    this.comment=comment;
    this.timestamp=timestamp;
@@ -34,6 +36,11 @@ public class CommentHistory {
        name=na;
    }
 
+   public void  setEmail(String em)
+   {
+       email=em;
+   }
+
    public void  setComment(String co)
    {
        comment=co;
@@ -42,6 +49,11 @@ public class CommentHistory {
    public String getName()
    {
        return name;
+   }
+
+   public String getEmail()
+   {
+       return email;
    }
 
    public String getComment()

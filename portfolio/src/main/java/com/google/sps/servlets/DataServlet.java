@@ -49,11 +49,12 @@ public class DataServlet extends HttpServlet {
     List<CommentHistory> list = new ArrayList<CommentHistory>();
     for (Entity entity : results.asIterable()) {
       long id = entity.getKey().getId();
+      String email = (String) entity.getProperty("email");
       String name = (String) entity.getProperty("name");
       String comment = (String) entity.getProperty("comment");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      CommentHistory c = new CommentHistory(id, name,comment, timestamp);
+      CommentHistory c = new CommentHistory(id,email,name,comment,timestamp);
       list.add(c);
     }
 
@@ -85,7 +86,8 @@ private String convertToJsonUsingGson(PresonIn p1) {
 @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
-   // CommentHistory com=new CommentHistory();
+    // CommentHistory com=new CommentHistory();
+    String emailInput = getParameter(request, "email-input", "");
     String text = getParameter(request, "name-input", "");
    
     String text1 = getParameter(request, "comment-input", "");
@@ -96,6 +98,7 @@ private String convertToJsonUsingGson(PresonIn p1) {
     long timestamp = System.currentTimeMillis();
    // response.sendRedirect("/index.html");
     Entity commentEntity = new Entity("CommentHistory");
+    commentEntity.setProperty("email",emailInput);
     commentEntity.setProperty("name",text);
     commentEntity.setProperty("comment", text1);
     commentEntity.setProperty("timestamp", timestamp);

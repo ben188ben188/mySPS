@@ -43,7 +43,7 @@ document.getElementById("demo").innerHTML = myObj.name+myObj.city;
 }
 function getHistory() {
   fetch('/data').then(response => response.json()).then((comment) => {
-    
+  
 
     console.log(comment);
     const historyEl = document.getElementById('history');
@@ -56,6 +56,6 @@ function getHistory() {
 /** Creates an <li> element containing text. */
 function createListElement(text) {
   const liElement = document.createElement('li');
-  liElement.innerText = text.name+" "+text.comment;
+  liElement.innerText ="Email: "+text.email+" Nick name: "+text.name+" Comment: "+text.comment;
   return liElement;
 }
