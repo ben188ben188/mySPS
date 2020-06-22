@@ -21,8 +21,7 @@ public class HomeServlet extends HttpServlet {
       String urlToRedirectToAfterUserLogsOut = "/";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
 
-      response.getWriter().println("<p>Hello " + userEmail + "!</p>");
-      
+      response.getWriter().println("<p>Hello " + userEmail + "!</p>"); 
       //<form action="/data" method="POST">
       response.getWriter().println("<form action=\"/data\" method=\"POST\">");
       response.getWriter().println("<textarea name=\"email-input\">" + userEmail + "</textarea>");
@@ -45,13 +44,18 @@ public class HomeServlet extends HttpServlet {
        
       response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
     } else {
-      String urlToRedirectToAfterUserLogsIn = "/";
-      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
-
-      response.getWriter().println("<p>Hello stranger.</p>");
-      
-     
-      response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
-    }
+       String urlToRedirectToAfterUserLogsIn = "/";
+       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+       response.getWriter().println("<p>Hello stranger.</p>");
+       response.getWriter().println("<p>Before make comment, Please login first!</p>");
+       response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
+      //response.sendRedirect("/"+loginUrl);
+     // RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/"+loginUrl);
+    //dispatcher.forward(request, response);
+    //try{request.getRequestDispatcher("/"+loginUrl).forward(request, response);}catch(Exception e) {
+						
+	//e.printStackTrace();}
   }
+  
+}
 }
